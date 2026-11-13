@@ -9,6 +9,7 @@ const errors = []
 page.on('pageerror', error => errors.push(error.message))
 try {
   await page.goto('http://127.0.0.1:5173')
+  assert.equal(await page.getByRole('button', { name: /Undo/ }).isDisabled(), true)
   const titles = ['Review reducer lecture notes', 'Build Task Manager interface', 'Write Vitest reducer tests']
   for (const title of titles) {
     await page.getByRole('textbox', { name: 'New task' }).fill(title)
@@ -44,6 +45,19 @@ try {
   await page.getByRole('textbox', { name: 'New task' }).fill('   ')
   await page.getByRole('button', { name: '+ Add task', exact: true }).click()
   assert.equal(await page.locator('.task-row').count(), 3)
+  await page.getByRole('button', { name: /^In progress / }).click()
+  await page.getByRole('textbox', { name: 'New task' }).fill('Verify filtered mutations')
+  await page.getByRole('button', { name: '+ Add task', exact: true }).click()
+  assert.deepEqual(await page.locator('.count').allTextContents(), ['4', '2', '1', '1'])
+  assert.equal(await page.locator('.task-row').count(), 1)
+  await page.getByRole('button', { name: `Next status for ${titles[1]}`, exact: true }).click()
+  assert.equal(await page.locator('.task-row').count(), 0)
+  assert.match(await page.locator('.empty').innerText(), /No tasks here/)
+  await page.getByRole('button', { name: /^Done / }).click()
+  await page.getByRole('button', { name: `Delete ${titles[1]}`, exact: true }).click()
+  assert.deepEqual(await page.locator('.task-title').allTextContents(), [titles[2]])
+  assert.deepEqual(await page.locator('.count').allTextContents(), ['3', '2', '0', '1'])
+  await page.getByRole('button', { name: /Undo/ }).click()
   await page.setViewportSize({ width: 390, height: 844 })
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true)
   assert.deepEqual(errors, [])

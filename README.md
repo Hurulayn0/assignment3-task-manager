@@ -1,9 +1,9 @@
-# Assignment 3 — Task Manager
-
-**Full name:** Huriye Kayadelen  
+﻿**Full name:** Huriye Kayadelen  
 **Student number:** 2200005795
 
-React + TypeScript application developed directly in the existing Vite starter.
+# Assignment 3 - Task Manager
+
+React + TypeScript implementation based on the existing Vite starter. Requirements were checked against the complete R1-R7 and bonus text supplied by the student. See FINAL_REVIEW.md for the evidence for each requirement.
 
 ## Run
 
@@ -13,40 +13,48 @@ Use Node.js 22.12+ (validated with Node 24).
 npm install
 npm run dev
 npm run build
-npm test
 npm run lint
+npm test
 ```
 
-Open the local address printed by Vite. Tasks are intentionally held in memory; refreshing starts an empty session.
+Tasks are held in memory. Refreshing starts an empty session.
 
-## Implemented behavior
+## R1-R7 checklist
 
-- App owns `tasks`, `filter`, and Undo history with `useReducer` and passes typed props to children.
-- A discriminated `Action` union supports add, advance, remove, setFilter, clearDone and undo.
-- New tasks have an externally generated ID, a trimmed title and To do status. Blank titles and duplicate IDs are ignored.
-- Next cycles To do → In progress → Done → To do. Delete removes the selected task.
-- All, To do, In progress and Done show live counts and an accessible pressed state.
-- Pure `filterTasks` and `countByFilter` derive the displayed list and counts.
-- Empty views show a message. Clear done removes completed tasks, including when another filter is selected.
-- Strict TypeScript, exhaustive action handling, immutable updates and no `any` in application code.
+| Requirement | Implementation |
+| --- | --- |
+| R1 | Exported State, initialState and taskReducer; State holds tasks, filter and bonus past; App uses useReducer(taskReducer, initialState). |
+| R2 | Typed add, advance, remove, setFilter and clearDone actions; Clear done removes every completed task and preserves the filter. |
+| R3 | Immutable, deterministic reducer; IDs generated in the form handler; exhaustive never check. |
+| R4 | React-free pure filterTasks and countByFilter in src/filter.ts. |
+| R5 | Four filter buttons dispatch setFilter, highlight selection and display matching tasks. |
+| R6 | Live counts and visible list derived during render; mutations work with filters active; empty views display No tasks here. |
+| R7 | Strict TypeScript build passes; no explicit any type in project source. |
 
-The original `Assignment_3_Week5_TaskManagerReducer.html` was not present at the supplied path during implementation. The above checklist follows the Assignment 3 source material in the existing downloaded assignment ZIP. Exact R1–R7 numbering, bonus wording and submission rules must be compared with the original HTML when available; this README does not claim that comparison occurred.
+App passes typed props and callbacks to child components. Context API and Zustand are not used.
 
 ## Bonus 1: Undo
 
-Each effective task change appends the previous task array to `past`. Undo restores the most recent snapshot and removes it from history. It preserves the currently selected filter. Changing filters, unknown task IDs, blank submissions and other operations that do not change tasks do not create snapshots. Undo is disabled when history is empty.
+State includes past: Task[][] and an undo action. Effective task changes save the previous task array. Filter changes and no-op actions do not add history. Undo keeps the current filter, restores clearDone results and is disabled when history is empty.
 
 ## Bonus 2: Vitest tests
 
-Vitest covers all actions, the complete status cycle, filtering and counts, empty input, unknown IDs, duplicate IDs, reference immutability and sequential Undo. `scripts/browser-check.mjs` additionally drives real Edge through the form, status buttons and four filters; checks Clear done, deletion, Undo, empty input, browser errors and mobile overflow; and captures the four screenshots. Run it with `node scripts/browser-check.mjs` while the development server runs on port 5173. It requires Microsoft Edge installed on Windows.
+Tests cover every action, three advances through the complete status cycle, immutability, all filters and counts, empty and unknown inputs, duplicate IDs, sequential Undo, mutations with an active filter and clearing multiple completed tasks. Latest output:
+
+```text
+Test Files  3 passed (3)
+     Tests  19 passed (19)
+```
+
+Final validation: npm run build, npm run lint, npm test and npm run browser passed. The browser check uses a real visible Microsoft Edge window and requires Vite on http://127.0.0.1:5173. Run npm run browser to reproduce the four screenshots and verify UI interactions.
 
 ## Bonus 3: Explain your reducer
 
 A reducer calculates the next state from the current state and an action. It is pure: it does not change its input, generate random IDs, read a clock or perform network requests. Given the same inputs, it produces the same result. This makes behavior predictable and allows the tests to exercise transitions without rendering React.
 
-For an advance action, `map` creates a new tasks array and a new object for the changed task. Unchanged task objects can be reused. Removal and clearing use `filter`; addition uses a spread. React can detect the changed references, and the previous task arrays remain valid Undo snapshots. Mutating a task in place would also corrupt history that shares that object.
+For an advance action, map creates a new tasks array and a new object for the changed task. Unchanged task objects can be reused. Removal and clearing use filter; addition uses a spread. React can detect the changed references, and the previous task arrays remain valid Undo snapshots. Mutating a task in place would also corrupt history that shares that object.
 
-IDs are created with `crypto.randomUUID()` in the form event handler before dispatch. The reducer therefore receives the ID as data and remains deterministic, including when React StrictMode invokes it again during development.
+IDs are created with crypto.randomUUID() in the form event handler before dispatch. The reducer therefore receives the ID as data and remains deterministic, including when React StrictMode invokes it again during development.
 
 The filtered list and counts are derived during rendering rather than stored independently. Storing these results would duplicate information: deleting a task could otherwise leave the count or filtered list stale. A single tasks array remains the source of truth.
 
@@ -54,28 +62,22 @@ Keeping the selected filter in reducer state centralizes transitions in one type
 
 ## Bonus 4: Git repository
 
-The local repository records the original starter, application implementation, tests and final delivery documentation as separate meaningful commits. The delivery includes `assignment3-history.bundle`; restore it using `git clone assignment3-history.bundle task-manager`.
+The local repository has more than five meaningful commits and a .gitignore excluding node_modules, dist and generated archives. Complete history is included as assignment3-history.bundle. Restore with:
 
-GitHub publication requires an authenticated account and a remote repository. No GitHub URL is invented and no publication is claimed. Local Git history completes the preparatory work for that bonus.
+```sh
+git clone assignment3-history.bundle task-manager
+```
 
-## Screenshots and submission
+**GitHub/GitLab URL: not available - no hosted repository has been published.**
 
-`screenshots/all.png`, `todo.png`, `in-progress.png` and `done.png` are generated from a real browser after three tasks are added through the UI, with one task in each status. Screenshots are not drawn mockups.
+This bonus is partially complete: local history, ignore rules, screenshots and README are present. The required real hosted repository URL is outstanding. Publication remains deferred under the instruction not to upload to GitHub. No repository URL is invented.
 
-`assignment3.zip` contains an `assignment3/` project folder, source, configuration, lockfile, tests, screenshots and this README. It excludes node_modules, build output, .git and itself. The Git bundle preserves history separately inside the deliverable.
+## Screenshots
 
-## Verified results
+Four real Edge captures are included: screenshots/all.png, todo.png, in-progress.png and done.png. The three tasks are Review reducer lecture notes (To do), Build Task Manager interface (In progress) and Write Vitest reducer tests (Done). Counts are 3 / 1 / 1 / 1. The browser script checks exact titles, status labels and selected filters before capturing. screenshots/verification.json records browser version and PNG hashes.
 
-- `npm install`: completed using Windows system CAs (`NODE_USE_SYSTEM_CA=1`) with TLS verification enabled.
-- `npm run build`: passed (TypeScript and Vite).
-- `npm test`: 3 test files, 17 tests passed.
-- `npm run lint`: passed.
-- `npm run dev -- --host 127.0.0.1 --port 5173 --strictPort`: started successfully.
-- Real Microsoft Edge browser checks passed; all four PNG files were captured from UI interactions.
+## Dependencies and submission
 
-Final review: compatible security updates upgraded Vite 8.3.2 to 8.3.8 and Zod 4.6.5 to 4.6.7. Audit now reports 10 moderate development-tool vulnerabilities, zero high and zero critical. npm suggests breaking changes for the remaining minimatch-related ESLint dependency chain; these were not applied. No --force or major-version upgrades were used. See dependency-audit.json and FINAL_REVIEW.md.
+Compatible security fixes were applied without major upgrades. The latest dependency audit reports 10 moderate development-tool findings, zero high and zero critical. Breaking changes suggested by npm were not applied; see dependency-audit.json.
 
-
-Final review: 13 November 2026 (Europe/Istanbul). All checks were repeated after security updates. Six meaningful local commits are included in the final Git bundle. GitHub upload has not been performed.
-
-Screenshot content and SHA-256 hashes are recorded in screenshots/verification.json. The browser script verifies the exact titles, status labels, selected filter, counts and number of rows before each capture.
+assignment3.zip includes source, configuration, lockfile, tests, README, review report, screenshots and Git bundle. It excludes node_modules, dist, .git and itself. No GitHub upload was performed. StudyBuddy was not modified.

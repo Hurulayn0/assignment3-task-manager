@@ -1,4 +1,4 @@
-﻿# Final submission review
+# Final submission review
 
 Full name: Huriye Kayadelen  
 Student number: 2200005795  
@@ -28,9 +28,9 @@ This comparison uses the complete R1-R7 and four bonus requirements supplied dir
 | 1: Undo | PASS | past: Task[][], undo action, disabled button without history, filter changes excluded from history, clearDone reversible. Unit tests and real browser checks pass. |
 | 2: Vitest | PASS | Three files, 19 passing tests. Includes all actions, three advances, immutability, helpers, counts, no-op/blank/duplicate edge cases, multiple done tasks and mutations with an active filter. README includes actual test summary. |
 | 3: Explain your reducer | PASS | README English explanation is 238 words. Covers pure reducer, external IDs, immutable updates, derived state and pros/cons of reducer-managed filters. |
-| 4: Git repository | PARTIAL | More than five meaningful commits, .gitignore, four screenshots and README are present. Complete history is included in assignment3-history.bundle. The real GitHub/GitLab URL is missing because no hosted repository exists and upload was explicitly deferred. This bonus is not claimed complete. |
+| 4: Git repository | PASS | More than five meaningful commits, .gitignore, four screenshots and README are present. Real private repository: https://github.com/Hurulayn0/assignment3-task-manager. The original eight commits are preserved. Complete history is included in assignment3-history.bundle. Instructor access is required for this private repository. |
 
-README begins with full name and student number. The first line of src/taskReducer.ts contains the same identity. GitHub publication has not been performed.
+README begins with full name and student number. The first line of src/taskReducer.ts contains the same identity. GitHub publication was subsequently authorized. Repository: https://github.com/Hurulayn0/assignment3-task-manager (private). The existing history was preserved without rewriting commits.
 
 ## Real browser screenshots
 

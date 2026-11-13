@@ -1,5 +1,8 @@
-﻿import { chromium } from '@playwright/test'
+import { chromium } from '@playwright/test'
 import assert from 'node:assert/strict'
+import { writeFile } from 'node:fs/promises'
+import { createHash } from 'node:crypto'
+const evidence = []
 const browser = await chromium.launch({ channel: 'msedge', headless: false })
 const page = await browser.newPage({ viewport: { width: 1365, height: 900 }, deviceScaleFactor: 1 })
 const errors = []
@@ -19,7 +22,15 @@ try {
     await button.click()
     assert.equal(await button.getAttribute('aria-pressed'), 'true')
     assert.equal(await page.locator('.task-row').count(), count)
-    await page.screenshot({ path: `screenshots/${filename}.png`, fullPage: true })
+    const expectedTitles = filename === 'all' ? titles : [titles[['todo', 'in-progress', 'done'].indexOf(filename)]]
+    const expectedStatuses = filename === 'all' ? ['To do', 'In progress', 'Done'] : [label]
+    assert.deepEqual(await page.locator('.task-title').allTextContents(), expectedTitles)
+    assert.deepEqual(await page.locator('.status-pill').allTextContents(), expectedStatuses)
+    assert.deepEqual(await page.locator('.count').allTextContents(), ['3', '1', '1', '1'])
+    assert.equal(await page.locator('[aria-pressed="true"]').count(), 1)
+    await page.mouse.move(0, 0)
+    const png = await page.screenshot({ path: `screenshots/${filename}.png`, fullPage: true })
+    evidence.push({ filter: label, file: `${filename}.png`, titles: expectedTitles, statuses: expectedStatuses, counts: [3, 1, 1, 1], sha256: createHash('sha256').update(png).digest('hex') })
   }
   await page.getByRole('button', { name: 'Clear done', exact: true }).click()
   assert.equal(await page.locator('.task-row').count(), 0)
@@ -36,5 +47,6 @@ try {
   await page.setViewportSize({ width: 390, height: 844 })
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true)
   assert.deepEqual(errors, [])
+  await writeFile('screenshots/verification.json', JSON.stringify({ browser: await browser.version(), url: page.url(), capturedAt: new Date().toISOString(), screenshots: evidence, checksPassed: true }, null, 2) + '\n')
   console.log('Browser checks passed: add, status cycle, four filters, counts, clear, delete, Undo, blank input, mobile overflow; four screenshots captured.')
 } finally { await browser.close() }

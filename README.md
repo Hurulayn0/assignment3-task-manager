@@ -1,6 +1,7 @@
-﻿# Assignment 3 — Task Manager
+# Assignment 3 — Task Manager
 
-Huriye Kayadelen · 2200005795
+**Full name:** Huriye Kayadelen  
+**Student number:** 2200005795
 
 React + TypeScript application developed directly in the existing Vite starter.
 
@@ -31,15 +32,15 @@ Open the local address printed by Vite. Tasks are intentionally held in memory; 
 
 The original `Assignment_3_Week5_TaskManagerReducer.html` was not present at the supplied path during implementation. The above checklist follows the Assignment 3 source material in the existing downloaded assignment ZIP. Exact R1–R7 numbering, bonus wording and submission rules must be compared with the original HTML when available; this README does not claim that comparison occurred.
 
-## Bonus: Undo
+## Bonus 1: Undo
 
 Each effective task change appends the previous task array to `past`. Undo restores the most recent snapshot and removes it from history. It preserves the currently selected filter. Changing filters, unknown task IDs, blank submissions and other operations that do not change tasks do not create snapshots. Undo is disabled when history is empty.
 
-## Bonus: Tests
+## Bonus 2: Vitest tests
 
 Vitest covers all actions, the complete status cycle, filtering and counts, empty input, unknown IDs, duplicate IDs, reference immutability and sequential Undo. `scripts/browser-check.mjs` additionally drives real Edge through the form, status buttons and four filters; checks Clear done, deletion, Undo, empty input, browser errors and mobile overflow; and captures the four screenshots. Run it with `node scripts/browser-check.mjs` while the development server runs on port 5173. It requires Microsoft Edge installed on Windows.
 
-## Bonus: Reducer explanation
+## Bonus 3: Explain your reducer
 
 A reducer calculates the next state from the current state and an action. It is pure: it does not change its input, generate random IDs, read a clock or perform network requests. Given the same inputs, it produces the same result. This makes behavior predictable and allows the tests to exercise transitions without rendering React.
 
@@ -51,7 +52,7 @@ The filtered list and counts are derived during rendering rather than stored ind
 
 Keeping the selected filter in reducer state centralizes transitions in one typed action union. The tradeoff is a small amount of action boilerplate compared with a separate state hook. For this application, the explicit transitions and testability justify it. Undo only changes tasks so the user's current view stays selected.
 
-## Bonus: Git history
+## Bonus 4: Git repository
 
 The local repository records the original starter, application implementation, tests and final delivery documentation as separate meaningful commits. The delivery includes `assignment3-history.bundle`; restore it using `git clone assignment3-history.bundle task-manager`.
 
@@ -72,4 +73,9 @@ GitHub publication requires an authenticated account and a remote repository. No
 - `npm run dev -- --host 127.0.0.1 --port 5173 --strictPort`: started successfully.
 - Real Microsoft Edge browser checks passed; all four PNG files were captured from UI interactions.
 
-npm reported 12 dependency vulnerabilities (10 moderate, 2 high). No forced major-version dependency upgrades were applied. Review `npm audit` before deploying this classroom project publicly.
+Final review: compatible security updates upgraded Vite 8.3.2 to 8.3.8 and Zod 4.6.5 to 4.6.7. Audit now reports 10 moderate development-tool vulnerabilities, zero high and zero critical. npm suggests breaking changes for the remaining minimatch-related ESLint dependency chain; these were not applied. No --force or major-version upgrades were used. See dependency-audit.json and FINAL_REVIEW.md.
+
+
+Final review: 13 November 2026 (Europe/Istanbul). All checks were repeated after security updates. Six meaningful local commits are included in the final Git bundle. GitHub upload has not been performed.
+
+Screenshot content and SHA-256 hashes are recorded in screenshots/verification.json. The browser script verifies the exact titles, status labels, selected filter, counts and number of rows before each capture.

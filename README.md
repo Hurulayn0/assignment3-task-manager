@@ -70,7 +70,7 @@ git clone assignment3-history.bundle task-manager
 
 **GitHub repository:** https://github.com/Hurulayn0/assignment3-task-manager
 
-The private GitHub repository preserves the original eight commits and subsequent delivery updates. Local history, ignore rules, four screenshots, README and the real hosted repository link are included. The instructor needs access to the private repository to view it.
+The public GitHub repository preserves the original eight commits and subsequent delivery updates. Local history, ignore rules, four screenshots, README and the real hosted repository link are included. The repository is public and can be viewed without collaborator access.
 
 ## Screenshots
 
@@ -80,4 +80,4 @@ Four real Edge captures are included: screenshots/all.png, todo.png, in-progress
 
 Compatible security fixes were applied without major upgrades. The latest dependency audit reports 10 moderate development-tool findings, zero high and zero critical. Breaking changes suggested by npm were not applied; see dependency-audit.json.
 
-assignment3.zip includes source, configuration, lockfile, tests, README, review report, screenshots and Git bundle. It excludes node_modules, dist, .git and itself. GitHub repository: https://github.com/Hurulayn0/assignment3-task-manager (private). StudyBuddy was not modified.
+assignment3.zip includes source, configuration, lockfile, tests, README, review report, screenshots and Git bundle. It excludes node_modules, dist, .git and itself. GitHub repository: https://github.com/Hurulayn0/assignment3-task-manager (public). StudyBuddy was not modified.

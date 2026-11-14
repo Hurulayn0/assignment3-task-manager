@@ -20,8 +20,8 @@ function AddForm({ dispatch }: { dispatch: Dispatch<Action> }) {
   }
   return (
     <form onSubmit={addTask} className="add-form">
-      <input name="title" aria-label="New task" placeholder="What needs to be done?" maxLength={120} required />
-      <button type="submit" className="primary">+ Add task</button>
+      <input name="title" aria-label="New task" placeholder="New task" maxLength={120} required />
+      <button type="submit">Add</button>
     </form>
   )
 }
@@ -43,7 +43,7 @@ function FilterBar({ filter, counts, dispatch }: {
 }
 
 function TaskList({ tasks, dispatch }: { tasks: Task[]; dispatch: Dispatch<Action> }) {
-  if (tasks.length === 0) return <div className="empty">No tasks here.<span>Try another filter or add a task.</span></div>
+  if (tasks.length === 0) return <p className="empty">No tasks here. Try another filter or add a task.</p>
   return (
     <ul className="task-list">
       {tasks.map((task) => (
@@ -60,24 +60,19 @@ export default function App() {
   const counts = countByFilter(state.tasks)
   const visible = filterTasks(state.tasks, state.filter)
   return (
-    <main className="app-shell">
-      <div className="eyebrow">ADVANCED WEB PROGRAMMING · ASSIGNMENT 3</div>
-      <header>
-        <div><h1>Task Manager</h1><p>Organize your day, one task at a time.</p></div>
-        <div className="total"><strong>{counts.all}</strong><span>Total tasks</span></div>
-      </header>
-      <section className="panel" aria-label="Task manager">
-        <h2>Add a new task</h2>
+    <>
+      <main>
+        <h1>Task Manager</h1>
         <AddForm dispatch={dispatch} />
-        <div className="section-header"><h2>Your tasks</h2><span>{counts.done} completed</span></div>
+        <p>Total tasks: {counts.all} | Completed: {counts.done}</p>
         <FilterBar filter={state.filter} counts={counts} dispatch={dispatch} />
         <TaskList tasks={visible} dispatch={dispatch} />
         <div className="actions">
-          <button type="button" onClick={() => dispatch({ type: 'undo' })} disabled={state.past.length === 0}>↶ Undo</button>
           <button type="button" onClick={() => dispatch({ type: 'clearDone' })} disabled={counts.done === 0}>Clear done</button>
+          <button type="button" onClick={() => dispatch({ type: 'undo' })} disabled={state.past.length === 0}>Undo</button>
         </div>
-      </section>
-      <footer>Built with React + TypeScript · State managed with useReducer</footer>
-    </main>
+      </main>
+      <footer>Huriye Kayadelen</footer>
+    </>
   )
 }

@@ -48,7 +48,7 @@ Test Files  4 passed (4)
      Tests  40 passed (40)
 ```
 
-Final validation on 14 November 2026: npm run build, npm run lint and npm test passed. With Vite running, npm run browser checks Add, the complete Next cycle, Delete, all four filters, counts, Clear done, Undo for every edit type, consecutive Undo, whitespace rejection and mobile overflow in visible Microsoft Edge. The browser check preserves the four original PNGs and does not generate report files.
+Final validation on 14 November 2026: npm run build, npm run lint and npm test passed. With Vite running, npm run browser checks Add, the complete Next cycle, Delete, all four filters, counts, Clear done, Undo for every edit type, consecutive Undo, whitespace rejection and mobile overflow in visible Microsoft Edge. The browser check refreshes the four PNGs through real UI interactions and does not generate report files. It verifies the name footer and checks responsive widths 650, 390 and 320 pixels.
 
 ## Bonus 3: Explain your reducer
 
@@ -74,9 +74,13 @@ git clone assignment3-history.bundle task-manager
 
 Existing Git history is preserved without rewriting commits. Local history, ignore rules, four screenshots, README and the real hosted repository link are included. The repository is public and can be viewed without collaborator access.
 
+## Starter appearance
+
+The supplied starter.zip contains no CSS files or green color definitions. Its App.tsx uses a plain heading, input, Add button and task list; TaskRow.tsx uses flex with an 8px gap, a flexible title, italic status and native Next/Delete buttons. The application follows those actual defaults: browser fonts, native controls and an undecorated page. No custom palette is attributed to the teacher. Minimal extra CSS handles filter selection, narrow screens and the small centered Huriye Kayadelen footer. Required filters, live counts, Clear done and Undo extend the starter; reducer behavior and all 40 tests are retained.
+
 ## Screenshots
 
-Four real Edge captures are included: screenshots/all.png, todo.png, in-progress.png and done.png. The three tasks are Review reducer lecture notes (To do), Build Task Manager interface (In progress) and Write Vitest reducer tests (Done). Counts are 3 / 1 / 1 / 1. These four PNGs are preserved unchanged. The browser script checks the same titles, statuses and selected filters without overwriting them.
+Four real Edge captures are included: screenshots/all.png, todo.png, in-progress.png and done.png. The three tasks are Review reducer lecture notes (To do), Build Task Manager interface (In progress) and Write Vitest reducer tests (Done). Counts are 3 / 1 / 1 / 1. The four PNGs are captured from the current starter-style UI. The browser script checks exact titles, statuses, counts, selected filters and the footer before capturing each view.
 
 ## Submission
 

@@ -32,12 +32,16 @@ Checked against the R1-R7 and four-bonus checklist recorded in this project, plu
 
 README begins with full name and student number. The first line of src/taskReducer.ts contains the same identity. GitHub publication was subsequently authorized. Repository: https://github.com/Hurulayn0/assignment3-task-manager (public). The existing history was preserved without rewriting commits.
 
+## Appearance source
+
+Rechecked C:\Users\USER\Downloads\starter.zip: no CSS or green theme is present. App.tsx supplies native HTML; TaskRow.tsx supplies flex, gap 8, centered alignment, flexible title and italic status. The implementation restores that plain appearance and adds only layout for the required filters, counters, actions, responsive wrapping and small centered name footer. No teacher palette was invented. Screenshots are newly captured from this version.
+
 ## Validation and delivery
 
 - npm run build: PASS, standard TypeScript and Vite production build.
 - npm run lint: PASS.
 - npm test: PASS, all 40 tests across four files, unchanged by cleanup.
 - npm run browser: PASS, visible Edge check against http://localhost:5173/; Add, full status cycle, Delete, four filters, counts, Clear done, Undo, blank input and mobile overflow.
-- Four original PNGs retained unchanged: all.png, todo.png, in-progress.png, done.png.
+- Four real Edge PNGs refreshed for the starter-style UI: all.png, todo.png, in-progress.png, done.png.
 
 The final ZIP is checked for required source, tests, configuration, package files, README, four screenshots and complete Git bundle. node_modules, dist, generated HTML, audit/verification JSON, raw test output and this local review note are excluded. Unused starter CSS/images and standalone build support were removed. No test, reducer or application behavior was removed. StudyBuddy was not modified.

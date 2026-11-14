@@ -7,11 +7,10 @@ const STATUS_LABELS: Record<Status, string> = {
 export default function TaskRow({ task, onNext, onDelete }: TaskRowProps) {
   return (
     <li className="task-row">
-      <span className={`status-dot ${task.status}`} aria-hidden="true" />
       <span className="task-title">{task.title}</span>
-      <span className={`status-pill ${task.status}`}>{STATUS_LABELS[task.status]}</span>
+      <em className="status-pill">{STATUS_LABELS[task.status]}</em>
       <button type="button" onClick={onNext} aria-label={`Next status for ${task.title}`}>Next</button>
-      <button type="button" className="delete" onClick={onDelete} aria-label={`Delete ${task.title}`}>Delete</button>
+      <button type="button" onClick={onDelete} aria-label={`Delete ${task.title}`}>Delete</button>
     </li>
   )
 }

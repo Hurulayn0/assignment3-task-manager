@@ -17,7 +17,14 @@ npm run lint
 npm test
 ```
 
-Tasks are held in memory. Refreshing starts an empty session.
+### Two opening methods
+
+1. Development: run `npm run dev` and open http://localhost:5173/. The root `index.html` is Vite's source entry and loads TypeScript/React through the dev server.
+2. Offline: double-click `Offline-TaskManager.html` in the project root, or `dist/index.html` after `npm run build`. These are identical standalone production builds with React, application JavaScript, CSS and favicon embedded. Open them in Chrome or Edge using `file://`; no server, localhost connection, external JavaScript or network access is needed. You may copy either HTML file to another folder on its own.
+
+The root source `index.html` remains the Vite entry; use the generated HTML for double-click opening. The build uses Vite followed by `scripts/build-offline.mjs` to inline the production assets, without adding dependencies or changing the React architecture. Rebuild after source changes to refresh both standalone files.
+
+Tasks are held in memory in both modes. Refreshing starts an empty session.
 
 ## R1-R7 checklist
 
@@ -39,14 +46,16 @@ State includes past: Task[][] and an undo action. Effective task changes save th
 
 ## Bonus 2: Vitest tests
 
-Tests cover every action, three advances through the complete status cycle, immutability, all filters and counts, empty and unknown inputs, duplicate IDs, sequential Undo, mutations with an active filter and clearing multiple completed tasks. Latest output:
+All 19 existing tests are preserved. 21 additional cases bring the total to 40: appending tasks, all four filter transitions, empty/all-done clearing, nonempty history edge cases, successive Undo across every edit, edits after Undo, frozen states/objects/history for every mutation and Undo, filtered operations, empty filters and counters through the full status cycle. Latest actual output (full run in test-results.txt):
 
 ```text
-Test Files  3 passed (3)
-     Tests  19 passed (19)
+Test Files  4 passed (4)
+     Tests  40 passed (40)
 ```
 
-Final validation: npm run build, npm run lint, npm test and npm run browser passed. The browser check uses a real visible Microsoft Edge window and requires Vite on http://127.0.0.1:5173. Run npm run browser to reproduce the four screenshots and verify UI interactions.
+Final validation on 14 November 2026: `npm run build`, `npm run lint` and `npm test` passed. With Vite running, `npm run browser` verifies the server app in visible Microsoft Edge. `npm run browser:offline` verifies the root standalone HTML with the browser offline and all HTTP(S) traffic blocked; zero resource/network requests are allowed. To test the dist copy in PowerShell, run `$env:OFFLINE_HTML='dist/index.html'; npm run browser:offline; Remove-Item Env:OFFLINE_HTML`.
+
+Both modes passed Add, the complete Next status cycle, Delete, all four filters, counts, Clear done, Undo of all edit types, consecutive Undo to empty history, whitespace rejection and mobile overflow checks. Reports are server-verification.json, offline-verification.json and dist-offline-verification.json. Browser runs capture views in memory and preserve the original four PNG files.
 
 ## Bonus 3: Explain your reducer
 
@@ -70,14 +79,14 @@ git clone assignment3-history.bundle task-manager
 
 **GitHub repository:** https://github.com/Hurulayn0/assignment3-task-manager
 
-The public GitHub repository preserves the original eight commits and subsequent delivery updates. Local history, ignore rules, four screenshots, README and the real hosted repository link are included. The repository is public and can be viewed without collaborator access.
+The GitHub repository preserves all 10 commits that existed before this update, with new meaningful commits appended and no history rewrite. Local history, ignore rules, four screenshots, README and the real hosted repository link are included. The repository is public and can be viewed without collaborator access.
 
 ## Screenshots
 
-Four real Edge captures are included: screenshots/all.png, todo.png, in-progress.png and done.png. The three tasks are Review reducer lecture notes (To do), Build Task Manager interface (In progress) and Write Vitest reducer tests (Done). Counts are 3 / 1 / 1 / 1. The browser script checks exact titles, status labels and selected filters before capturing. screenshots/verification.json records browser version and PNG hashes.
+Four real Edge captures are included: screenshots/all.png, todo.png, in-progress.png and done.png. The three tasks are Review reducer lecture notes (To do), Build Task Manager interface (In progress) and Write Vitest reducer tests (Done). Counts are 3 / 1 / 1 / 1. verification.json retains the original browser version and PNG hashes. These four PNGs are unchanged; their SHA-256 hashes were checked against that evidence. The updated browser script checks the same titles, statuses and selected filters without overwriting them.
 
 ## Dependencies and submission
 
 Compatible security fixes were applied without major upgrades. The latest dependency audit reports 10 moderate development-tool findings, zero high and zero critical. Breaking changes suggested by npm were not applied; see dependency-audit.json.
 
-assignment3.zip includes source, configuration, lockfile, tests, README, review report, screenshots and Git bundle. It excludes node_modules, dist, .git and itself. GitHub repository: https://github.com/Hurulayn0/assignment3-task-manager (public). StudyBuddy was not modified.
+assignment3.zip includes source, configuration, lockfile, tests, README, review report, screenshots and Git bundle. It includes dist/index.html and Offline-TaskManager.html for direct opening, plus actual test/browser results. It excludes node_modules, other dist assets, .git and the ZIP itself. GitHub repository: https://github.com/Hurulayn0/assignment3-task-manager (public). StudyBuddy was not modified.

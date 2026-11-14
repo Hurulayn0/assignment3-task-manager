@@ -3,7 +3,7 @@
 Full name: Huriye Kayadelen  
 Student number: 2200005795  
 Project: C:\Users\USER\task-manager  
-Review date: 13 November 2026 (Europe/Istanbul)
+Review date: 14 November 2026 (Europe/Istanbul)
 
 ## Requirements source
 
@@ -26,15 +26,15 @@ This comparison uses the complete R1-R7 and four bonus requirements supplied dir
 | Bonus | Result | Evidence |
 | --- | --- | --- |
 | 1: Undo | PASS | past: Task[][], undo action, disabled button without history, filter changes excluded from history, clearDone reversible. Unit tests and real browser checks pass. |
-| 2: Vitest | PASS | Three files, 19 passing tests. Includes all actions, three advances, immutability, helpers, counts, no-op/blank/duplicate edge cases, multiple done tasks and mutations with an active filter. README includes actual test summary. |
+| 2: Vitest | PASS | Four files, 40 passing tests; the original 19 are preserved and 21 distinct additional cases were added. Includes all actions, three advances, immutability, helpers, counts, no-op/blank/duplicate edge cases, multiple done tasks and mutations with an active filter. README includes actual test summary. |
 | 3: Explain your reducer | PASS | README English explanation is 238 words. Covers pure reducer, external IDs, immutable updates, derived state and pros/cons of reducer-managed filters. |
-| 4: Git repository | PASS | More than five meaningful commits, .gitignore, four screenshots and README are present. Real public repository: https://github.com/Hurulayn0/assignment3-task-manager. The original eight commits are preserved. Complete history is included in assignment3-history.bundle. The repository is publicly accessible. |
+| 4: Git repository | PASS | More than five meaningful commits, .gitignore, four screenshots and README are present. Real public repository: https://github.com/Hurulayn0/assignment3-task-manager. All 10 pre-update commits are preserved with new commits appended. Complete history is included in assignment3-history.bundle. The repository is publicly accessible. |
 
 README begins with full name and student number. The first line of src/taskReducer.ts contains the same identity. GitHub publication was subsequently authorized. Repository: https://github.com/Hurulayn0/assignment3-task-manager (public). The existing history was preserved without rewriting commits.
 
 ## Real browser screenshots
 
-The visible Microsoft Edge browser runs the actual Vite React app on http://127.0.0.1:5173. Three tasks are entered through the form and advanced through real buttons before screenshots are captured.
+The original four PNGs are preserved unchanged. Fresh visible Microsoft Edge checks run the actual Vite React app at http://localhost:5173/ and both standalone HTML copies via file://. Three tasks are entered through the form and advanced through real buttons; current view captures are held in memory.
 
 | File | Selected filter | Visible tasks |
 | --- | --- | --- |
@@ -43,17 +43,24 @@ The visible Microsoft Edge browser runs the actual Vite React app on http://127.
 | screenshots/in-progress.png | In progress | Build Task Manager interface (In progress) |
 | screenshots/done.png | Done | Write Vitest reducer tests (Done) |
 
-Every view shows counts 3 / 1 / 1 / 1 and exactly one selected filter. The browser script asserts titles, status labels and counts before capture, records PNG SHA-256 hashes and browser version in screenshots/verification.json, and then checks Clear done, delete, Undo, whitespace input, filtered mutations, empty view and mobile overflow. Screenshot capture occurs before later test-only mutations. No screenshot mockups or injected application state are used.
+Every view shows counts 3 / 1 / 1 / 1 and exactly one selected filter. The original verification.json records the preserved PNG SHA-256 hashes; all four hashes still match. Updated checks assert titles, statuses, counts and selected filters, complete the full status cycle, and check Clear done, delete, Undo of all edits, sequential Undo, whitespace input, filtered mutations, empty view and mobile overflow. Current results are recorded separately in server-verification.json, offline-verification.json and dist-offline-verification.json. No screenshot mockups or injected application state are used.
 
 ## Final command results
 
 - npm run build: PASS, strict TypeScript and Vite 8.3.8.
 - npm run lint: PASS.
-- npm test: PASS, 3 files / 19 tests.
-- npm run browser: PASS, real Edge interactions and four captures.
+- npm test: PASS, 4 files / 40 tests. Actual output: test-results.txt.
+- npm run dev: localhost:5173 serves the normal React application.
+- npm run browser: PASS, visible Edge interactions against the dev server.
+- npm run browser:offline: PASS for both Offline-TaskManager.html and dist/index.html, visible Edge with network offline and HTTP(S) blocked; zero extra resource/network requests.
+- Original four screenshot hashes: unchanged.
+
+## Standalone HTML
+
+The root index.html stays the Vite source entry. npm run build runs strict TypeScript, Vite, and scripts/build-offline.mjs. This final step embeds the built JavaScript, CSS and favicon into dist/index.html and writes an identical Offline-TaskManager.html at the project root. Either generated file opens directly by double-click in Chrome or Edge, without a server or external resources. Both copies were exercised in real Edge via file:// with network disabled. The application code and reducer are shared between both opening methods. No new dependencies were required.
 
 ## Dependencies and delivery
 
 Previously applied compatible updates fixed two high-severity findings without major upgrades. dependency-audit.json records 10 remaining moderate development-tool findings and zero high/critical. The remaining minimatch-related ESLint dependency changes suggested by npm are breaking changes and were not applied.
 
-assignment3.zip contains tracked source, configuration, tests, README, this report, dependency audit, four PNGs, screenshot evidence and the full Git bundle. node_modules, dist, .git and the ZIP itself are excluded. ZIP contents are compared with source hashes after creation. StudyBuddy was not modified.
+assignment3.zip contains tracked source, configuration, tests, README, this report, dependency audit, four PNGs, screenshot evidence and the full Git bundle. Standalone dist/index.html and Offline-TaskManager.html are included alongside test and browser results. node_modules, other dist assets, .git and the ZIP itself are excluded. ZIP contents are compared with source hashes after creation. StudyBuddy was not modified.

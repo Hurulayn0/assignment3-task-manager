@@ -1,22 +1,9 @@
 import { chromium } from '@playwright/test'
 import assert from 'node:assert/strict'
-import { writeFile } from 'node:fs/promises'
-import { createHash } from 'node:crypto'
-import { resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
-const offline = process.argv.includes('--offline')
-const target = offline ? pathToFileURL(resolve(process.env.OFFLINE_HTML || 'Offline-TaskManager.html')).href : 'http://localhost:5173/'
-const requests = []
-const report = offline ? (process.env.OFFLINE_HTML ? 'dist-offline-verification.json' : 'offline-verification.json') : 'server-verification.json'
-const evidence = []
+const target = 'http://localhost:5173/'
 const browser = await chromium.launch({ channel: 'msedge', headless: false })
 const page = await browser.newPage({ viewport: { width: 1365, height: 900 }, deviceScaleFactor: 1 })
 const errors = []
-if (offline) {
-  await page.context().setOffline(true)
-  await page.route(/https?:\/\//, route => route.abort())
-  page.on('request', request => { if (request.url() !== target) requests.push(request.url()) })
-}
 page.on('pageerror', error => errors.push(error.message))
 try {
   await page.goto(target)
@@ -40,10 +27,6 @@ try {
     assert.deepEqual(await page.locator('.status-pill').allTextContents(), expectedStatuses)
     assert.deepEqual(await page.locator('.count').allTextContents(), ['3', '1', '1', '1'])
     assert.equal(await page.locator('[aria-pressed="true"]').count(), 1)
-    await page.mouse.move(0, 0)
-    // Preserve the four original submission PNGs; capture in memory for this run.
-    const png = await page.screenshot({ fullPage: true })
-    evidence.push({ filter: label, view: filename, titles: expectedTitles, statuses: expectedStatuses, counts: [3, 1, 1, 1], sha256: createHash('sha256').update(png).digest('hex') })
   }
   // Complete done -> todo -> in-progress -> done through actual UI controls.
   await page.getByRole('button', { name: /^All / }).click()
@@ -101,7 +84,5 @@ try {
   assert.equal(await page.locator('.task-row').count(), 0)
   assert.equal(await page.getByRole('button', { name: /Undo$/ }).isDisabled(), true)
   assert.deepEqual(errors, [])
-  if (offline) assert.deepEqual(requests, [])
-  await writeFile(report, JSON.stringify({ mode: offline ? 'file' : 'dev', requests, browser: await browser.version(), url: page.url(), capturedAt: new Date().toISOString(), views: evidence, checksPassed: true }, null, 2) + '\n')
-  console.log(`Browser checks passed (${target}): Add, full Next cycle, Delete, four filters, counts, Clear done, Undo for all edits, sequential Undo, blank input and mobile overflow. Original screenshots preserved.${offline ? ' Zero resource/network requests; browser offline.' : ''}`)
+  console.log('Browser checks passed: Add, full Next cycle, Delete, four filters, counts, Clear done, Undo, blank input and mobile overflow. Original screenshots preserved.')
 } finally { await browser.close() }
